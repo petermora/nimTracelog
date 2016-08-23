@@ -46,3 +46,83 @@ and also lists the variables and lines from the function:
                        semexprs.nim(2342) semExpr
 ...
 ```
+
+#tracelogsimple
+
+The *tracelogsimple.nim* is a simplified version of *tracelog.nim*. You can use it in a regular (not compiler) nim program. For example:
+```nim
+import tracelogsimple
+proc fib(n: int): int {.trace.} =
+  if n < 2:
+    return n
+  result = fib(n-1) + fib(n-2)
+  return result
+
+echo fib(4)
+```
+
+Results:
+```nim
+fib.nim(8) fib
+ tracelogsimple.nim(27) fib
+   +n: (int) 4
+   +result: (int) 0
+   |if n < 2:
+   |  return n
+   |result = fib(n - 1) + fib(n - 2)
+ fib.nim(5) fib
+  tracelogsimple.nim(27) fib
+    +n: (int) 3
+    |if n < 2:
+    |  return n
+    |result = fib(n - 1) + fib(n - 2)
+  fib.nim(5) fib
+   tracelogsimple.nim(27) fib
+     +n: (int) 2
+     |if n < 2:
+     |  return n
+     |result = fib(n - 1) + fib(n - 2)
+   fib.nim(5) fib
+    tracelogsimple.nim(27) fib
+      +n: (int) 1
+      |if n < 2:
+      |  return n
+      +n: (int) 0
+      |if n < 2:
+      |  return n
+   tracelogsimple.nim(27) fib
+     +n: (int) 2
+     +result: (int) 1
+     |return result
+     +n: (int) 1
+     +result: (int) 0
+     |if n < 2:
+     |  return n
+  tracelogsimple.nim(27) fib
+    +n: (int) 3
+    +result: (int) 2
+    |return result
+    +n: (int) 2
+    +result: (int) 0
+    |if n < 2:
+    |  return n
+    |result = fib(n - 1) + fib(n - 2)
+  fib.nim(5) fib
+   tracelogsimple.nim(27) fib
+     +n: (int) 1
+     |if n < 2:
+     |  return n
+     +n: (int) 0
+     |if n < 2:
+     |  return n
+  tracelogsimple.nim(27) fib
+    +n: (int) 2
+    +result: (int) 1
+    |return result
+ tracelogsimple.nim(27) fib
+   +n: (int) 4
+   +result: (int) 3
+   |return result
+3
+```
+```
